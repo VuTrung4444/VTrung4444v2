@@ -206,7 +206,8 @@ local Map2 = {
     ["Sound Cave"] = CFrame.new(1828, 487, -2770)
 }
 
-local Godmodes = {
+local GodModes = {
+	"scythe_asteroid_reap",
     "Water_Surface_Slash",
     "Water_fall_basin",
     "insect_breathing_dance_of_the_centipede",
@@ -224,7 +225,9 @@ local Godmodes = {
     "snow_breathing_illusory_Storm",
     "sound_breathing_smoke_screen",
     "ice_demon_art_bodhisatva"
-}  
+} 
+
+getgenv().GodSelected = GodModes[1]
 
 local Map2List = {}
 local Map1List = {}
@@ -539,26 +542,20 @@ Farming:AddSlider({
     end 
 })
 
-local SelectedSkill = ""
 Farming:AddToggle({
-    Name = "Godmode", 
-    Value = false,
-    Flag = "Godmode",
-    Callback = function(State)
-        Godmode = State 
-        while Godmode and IsOpen() do 
-            Handle_Initiate_S:FireServer("skil_ting_asd", Player, SelectedSkill, 1)
-        end 
+    Name = "Enable God Mode", 
+    Flag = "GN",
+    Callback = function(v)
+        ENG = v 
     end 
 })
 
 Farming:AddDropdown({
-    Name = "Skill",
-    List = Godmodes, 
-    Flag = "Skill",
-    Nothing = "Select Skill..",
-    Callback = function(State)
-        SelectedSkill = State 
+    Name = "God mode Selection",
+	Flag = "Gm",
+    List = GodModes, 
+    Callback = function(v)
+        getgenv().GodSelected = v
     end 
 })
 
@@ -1078,6 +1075,24 @@ spawn(function()
                 game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S_:InvokeServer("skil_ting_asd",game:GetService("Players").LocalPlayer,"arrow_knock_back",5)
 				task.wait(10)
             end
+        end
+    end
+end)
+
+--// Inf iFrames \\--
+
+spawn(function()
+    while task.wait() do
+        if ENG then
+            local args = {
+                [1] = "skil_ting_asd",
+                [2] = game:GetService("Players").LocalPlayer,
+                [3] = getgenv().GodSelected,
+                [4] = 1
+            }
+            
+            game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("To_Server"):WaitForChild("Handle_Initiate_S"):FireServer(unpack(args))
+            task.wait(0.55)
         end
     end
 end)
