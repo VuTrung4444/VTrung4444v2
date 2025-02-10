@@ -990,12 +990,20 @@ MiscMisc:AddButton({
 })
 
 MiscMisc:AddToggle({
-    Name = "Disable 3D Rendering",
-    Value = false,
-    Flag = "3DR",
-    Callback = function(State)
-        game:GetService("RunService"):Set3dRenderingEnabled(not State)
-    end 
+    Name = "No Fog",
+    Flag = "NF",
+    Callback = function(v)
+        if v == true then
+            for index, light in pairs(game:GetService("Lighting"):GetChildren()) do
+                if light.Name == "Atmosphere" or string.find(light.Name, "Blur") or string.find(light.Name, "Bloom") then
+                    light:Destroy()
+                end
+            end
+            game:GetService("Lighting").FogEnd = 1000000
+            elseif v == false then
+            print("1")
+        end
+    end
 })
 
 function getclosestSkills(parentFolder)
