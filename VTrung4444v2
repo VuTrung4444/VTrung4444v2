@@ -353,7 +353,7 @@ local GetClosestPlayer = function()
     return Ret 
 end 
 
-local Method, SelectedWeapon = "", "fist_combat"
+local Method, SelectedWeapon = "", "Scythe_Combat_Slash"
 local FireAttack = function(i)
     return Handle_Initiate_S:FireServer(
         SelectedWeapon, 
@@ -711,12 +711,8 @@ Aura:AddDropdown({
     List = {"Scythe", "Sword", "Claw", "Fans", "Fist"},
     Nothing = "Select Weapon..",
     Flag = "Weapon",
+	Value = "Scythe",
     Callback = function(State)
-        if State == "Fist" then 
-            Method = "kick"
-        else 
-            Method = "ground_slash"
-        end 
         SelectedWeapon = Weapons[State]
     end    
 })
@@ -1066,7 +1062,7 @@ spawn(function()
 
 				if modelCFrame then
                 	game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer("arrow_knock_back_damage",game.Players.LocalPlayer.Character,modelCFrame,v,200,200)
-                	task.wait(0.25)
+                	task.wait(0.275)
 				end
 
             end
